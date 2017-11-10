@@ -50,6 +50,19 @@ namespace WebApplication1.Services
             return true;
         }
 
-        
+        public void DeleteBook(BookDTO book)
+        {
+            MockData.Current.Books.Remove(book);
+        }
+
+        public void DeletePublisher(PublisherDTO publisher)
+        {
+            foreach(var book in publisher.Books)
+            {
+                DeleteBook(book);
+            }
+
+            MockData.Current.Publishers.Remove(publisher);
+        }
     }
 }

@@ -108,10 +108,16 @@ namespace WebApplication1.Controllers
         }
 
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            var publisherToDelete = _bookstore.GetPublisher(id);
+            if (publisherToDelete == null) return NotFound();
 
+            _bookstore.DeletePublisher(publisherToDelete);
+            _bookstore.Save();
+
+            return NoContent();
         }
 
         private IActionResult VerifyPublisher(int id, PublisherCreateDTO publisher)
@@ -129,13 +135,6 @@ namespace WebApplication1.Controllers
             if (!publisherExists) return NotFound();
 
             return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            // Code to remove the resource
-            return NoContent();
         }
     }
 }

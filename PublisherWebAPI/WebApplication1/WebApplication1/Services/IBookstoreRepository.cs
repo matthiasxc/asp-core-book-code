@@ -14,7 +14,8 @@ namespace WebApplication1.Services
         bool PublisherExists(int publisherId);
         void AddPublisher(PublisherDTO publisher);
         void UpdatePublisher(int id, PublisherUpdateDTO publisher);
-        void DeletePublisher(int id);
+        void DeletePublisher(PublisherDTO publisher);
+        void DeleteBook(BookDTO book);
         bool Save();
     }
 }
