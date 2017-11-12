@@ -8,13 +8,14 @@ using WebApplication1.Models;
 namespace WebApplication1.Services
 {
     public class MockBookstoreRepository : IBookstoreRepository
-    {       
+    {
 
+        #region Publisher methods
         public PublisherDTO GetPublisher(int publisherId, bool includeBooks = false)
         {
             var publisher = MockData.Current.Publishers.FirstOrDefault(p => p.Id.Equals(publisherId));
 
-            if(includeBooks && publisher != null)
+            if (includeBooks && publisher != null)
             {
                 publisher.Books = MockData.Current.Books.Where(b => b.PublisherId.Equals(publisherId)).ToList();
             }
@@ -45,9 +46,28 @@ namespace WebApplication1.Services
             publisherToUpdate.Established = publisher.Established;
         }
 
-        public bool Save()
+        public void DeletePublisher(PublisherDTO publisher)
         {
-            return true;
+            foreach (var book in publisher.Books)
+            {
+                DeleteBook(book);
+            }
+
+            MockData.Current.Publishers.Remove(publisher);
+        }
+
+        #endregion
+
+        #region Book Methods
+
+        public IEnumerable<BookDTO> GetBooks(int publisherId)
+        {
+            return MockData.Current.Books.Where(b => b.PublisherId.Equals(publisherId));
+        }
+
+        public BookDTO GetBook(int publisherId, int bookId)
+        {
+            return MockData.Current.Books.FirstOrDefault(b => b.PublisherId.Equals(publisherId) && b.Id.Equals(bookId));
         }
 
         public void DeleteBook(BookDTO book)
@@ -55,14 +75,29 @@ namespace WebApplication1.Services
             MockData.Current.Books.Remove(book);
         }
 
-        public void DeletePublisher(PublisherDTO publisher)
+        public void AddBook(BookDTO book)
         {
-            foreach(var book in publisher.Books)
-            {
-                DeleteBook(book);
-            }
-
-            MockData.Current.Publishers.Remove(publisher);
+            var bookId = MockData.Current.Books.Max(m => m.Id) + 1;
+            book.Id = bookId;
+            MockData.Current.Books.Add(book);
         }
+
+        public void UpdateBook(int publisherId, int bookId, BookUpdateDTO book)
+        {
+            var bookToUpdate = GetBook(publisherId, bookId);
+            bookToUpdate.Title = book.Title;
+        }
+
+        #endregion 
+
+
+        public bool Save()
+        {
+            return true;
+        }
+
+        
     }
+
+       
 }

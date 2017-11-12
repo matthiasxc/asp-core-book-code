@@ -15,7 +15,15 @@ namespace WebApplication1.Services
         void AddPublisher(PublisherDTO publisher);
         void UpdatePublisher(int id, PublisherUpdateDTO publisher);
         void DeletePublisher(PublisherDTO publisher);
+
+        IEnumerable<BookDTO> GetBooks(int publisherId);
+        BookDTO GetBook(int publisherId, int bookId);
+        void AddBook(BookDTO book);
+        void UpdateBook(int publisherId, int bookId, BookUpdateDTO book);
         void DeleteBook(BookDTO book);
+        
         bool Save();
+
+
     }
 }
