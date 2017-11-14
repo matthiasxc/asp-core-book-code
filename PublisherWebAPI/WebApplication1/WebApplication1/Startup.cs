@@ -7,6 +7,8 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Routing;
 using WebApplication1.Services;
+using WebApplication1.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1
 {
@@ -18,7 +20,7 @@ namespace WebApplication1
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
+                .AddJsonFile("appsettings.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -33,8 +35,18 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            var conn = Configuration["connectionStrings:sqlConnection"];
+            services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(conn));
+            AutoMapper.Mapper.Initialize(config =>
+            {
+                config.CreateMap<Entities.Book, Models.BookDTO>();
+                config.CreateMap<Models.BookDTO, Entities.Book>();
+                config.CreateMap<Entities.Publisher, Models.PublisherDTO>();
+                config.CreateMap<Models.PublisherDTO, Entities.Publisher>();
+            });
 
             services.AddScoped(typeof(IBookstoreRepository), typeof(MockBookstoreRepository));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
