@@ -86,7 +86,7 @@ namespace WebApplication1.Controllers
             var bookPatch = new BookUpdateDTO()
                                 {
                                     Title = bookToUpdate.Title,
-                                    PublisherID = bookToUpdate.PublisherId
+                                    PublisherId = bookToUpdate.PublisherId
                                 };
             book.ApplyTo(bookPatch, ModelState);
 

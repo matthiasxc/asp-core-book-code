@@ -45,7 +45,8 @@ namespace WebApplication1
                 config.CreateMap<Models.PublisherDTO, Entities.Publisher>();
             });
 
-            services.AddScoped(typeof(IBookstoreRepository), typeof(MockBookstoreRepository));
+            //services.AddScoped(typeof(IBookstoreRepository), typeof(MockBookstoreRepository));
+            services.AddScoped(typeof(IBookstoreRepository), typeof(BookstoreSqlRepository));
             
         }
 

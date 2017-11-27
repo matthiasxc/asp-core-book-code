@@ -11,6 +11,6 @@ namespace WebApplication1.Models
         [Required(ErrorMessage = "You must enter a name.")]
         [MaxLength(50)]
         public string Title {get; set;}
-        public int PublisherID { get; set; }
+        public int PublisherId { get; set; }
     }
 }
